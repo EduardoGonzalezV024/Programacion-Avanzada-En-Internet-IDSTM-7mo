@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://unpkg.com/vue@3"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- ejemplo -->
+    <div id="contenedor">
+        <h1>
+            {{name}}
+        </h1>
+
+        <h1>
+            {{lastname}}
+        </h1>
+
+        <input type="text" v-model="name" name="">
+
+
+        <button @click="hola">
+            Click me!
+        </button>
+
+        <br><hr>
+
+        <input type="number" v-model="number1" name="number1">
+        <input type="number" v-model="number2" name="number2">
+
+        <button @click="suma()">Suma</button>
+
+        <br>
+
+        <h1>
+            {{resultado}}
+        </h1>
+
+    </div>
+
+    <script type="text/javascript">
+        //vincular vue con mi contenedor
+        const {createApp} = Vue;
+
+        const app = createApp({
+            data(){
+                return{
+                    name:'Jose Eduardo',
+                    lastname: 'Gonzalez Vega',
+                    number1: 0,
+                    number2: 0,
+                    resultado: 0
+                }
+            },
+            methods: {
+                hola(){
+                    alert('hola')
+                },
+                suma(){
+                    this.resultado = parseInt(this.number1) + parseInt(this.number2);
+                }
+            }
+        }).mount('#contenedor')
+    </script>
+</body>
+
+</html>
