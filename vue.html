@@ -8,33 +8,28 @@
 
     <!-- ejemplo -->
     <div id="contenedor">
-        <h1>
-            {{name}}
-        </h1>
+        
+        <form>
+            <fieldset>
+                <legend>
+                    Acceso Panel
+                </legend>
 
-        <h1>
-            {{lastname}}
-        </h1>
+                <label>
+                    Correo electronico
+                </label>
+                <input type="email" v-model="email" name="">
 
-        <input type="text" v-model="name" name="">
+                <label>
+                    Password
+                </label>
+                <input type="password" v-model="password" name="">
 
-
-        <button @click="hola">
-            Click me!
-        </button>
-
-        <br><hr>
-
-        <input type="number" v-model="number1" name="number1">
-        <input type="number" v-model="number2" name="number2">
-
-        <button @click="suma()">Suma</button>
-
-        <br>
-
-        <h1>
-            {{resultado}}
-        </h1>
+                <button @click="login">
+                    Acceder
+                </button>
+            </fieldset>
+        </form>
 
     </div>
 
@@ -42,23 +37,41 @@
         //vincular vue con mi contenedor
         const {createApp} = Vue;
 
+        const data = null;
+        const error = null;
+
         const app = createApp({
             data(){
                 return{
-                    name:'Jose Eduardo',
-                    lastname: 'Gonzalez Vega',
-                    number1: 0,
-                    number2: 0,
-                    resultado: 0
+                    users:null,
+                    email:'',
+                    password:''
                 }
             },
             methods: {
-                hola(){
-                    alert('hola')
-                },
-                suma(){
-                    this.resultado = parseInt(this.number1) + parseInt(this.number2);
+                login(e){
+                    e.preventDefault();
+                    
+                    var email_user = this.email
+                    var password_user = this.password
+
+                    var acces = this.users.map(function(u){
+                        if (email_user === u.email.toLowerCase()){
+                            if(password_user === u.password){
+                                return true;
+                            }
+                        }
+                    })
+
+                    console.log(acces)
                 }
+                
+            },
+            mounted(){
+                fetch('users.json')
+                    .then((res) => res.json())
+                    .then((json) => (this.users = json))
+                    .then((err) => (console.log(json)))
             }
         }).mount('#contenedor')
     </script>
