@@ -55,15 +55,24 @@
                     var email_user = this.email
                     var password_user = this.password
 
-                    var acces = this.users.map(function(u){
-                        if (email_user === u.email.toLowerCase()){
+                    var acces = false;
+
+                    this.users.forEach((u) => {
+                        if (email_user.toLowerCase() === u.email.toLowerCase()){
                             if(password_user === u.password){
-                                return true;
+                                alert("Quiubole con JSON by Jordy Rosado")
+                                acces = true;
+                                window.localStorage.setItem("user", JSON.stringify(u))
+                                window.location.href = "tabla.html"
                             }
                         }
                     })
 
+                    if(!acces){
+                        alert("Los datos son incorrectos")
+                    }
                     console.log(acces)
+                    console.log(JSON.parse(window.localStorage.getItem("user")).username)
                 }
                 
             },
@@ -71,7 +80,7 @@
                 fetch('users.json')
                     .then((res) => res.json())
                     .then((json) => (this.users = json))
-                    .then((err) => (console.log(json)))
+                    .then((err) => (console.log(err)))
             }
         }).mount('#contenedor')
     </script>

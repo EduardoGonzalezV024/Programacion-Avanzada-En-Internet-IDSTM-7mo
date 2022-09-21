@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://unpkg.com/vue@3"></script>
+    <title>Document</title>
+    <style>
+        table,td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ejemplo -->
+    <div id="contenedor">
+
+        <h2>
+            LISTA DE USUARIOS
+        </h2>
+
+        <button>Add new user</button>
+
+        <br><br>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Nombre Usuario</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+            </tr>
+            <tr v-for="(i, index) in users">
+               <td>{{i.id}}</td> 
+               <td>{{i.name}}</td> 
+               <td>{{i.username}}</td> 
+               <td>{{i.email}}</td> 
+               <td>{{i.phone}}</td> 
+            </tr>
+        </table>
+
+        <h2>
+            {{logedUser}}
+        </h2>
+
+    </div>
+
+    <script type="text/javascript">
+        //vincular vue con mi contenedor
+        const {createApp} = Vue;
+
+        const data = null;
+        const error = null;
+
+        const app = createApp({
+            data(){
+                return{
+                    users:null,
+                    logedUser: null
+                }
+            },
+            mounted(){
+                fetch('users.json')
+                    .then((res) => res.json())
+                    .then((json) => (this.users = json))
+                    .then((err) => (console.log(err)));
+
+                this.logedUser = JSON.parse(window.localStorage.getItem("user")).username;
+            }
+        }).mount('#contenedor')
+    </script>
+</body>
+
+</html>
