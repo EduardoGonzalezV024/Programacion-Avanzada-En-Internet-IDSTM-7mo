@@ -18,7 +18,7 @@
             LISTA DE USUARIOS
         </h2>
 
-        <button>Add new user</button>
+        <button @click="operation = 0; formUsers = true">Add new user</button>
 
         <br><br>
 
@@ -29,20 +29,48 @@
                 <th>Nombre Usuario</th>
                 <th>Correo</th>
                 <th>Telefono</th>
+                <th>Opciones</th>
             </tr>
             <tr v-for="(i, index) in users">
                <td>{{i.id}}</td> 
                <td>{{i.name}}</td> 
                <td>{{i.username}}</td> 
                <td>{{i.email}}</td> 
-               <td>{{i.phone}}</td> 
+               <td>{{i.phone}}</td>
+               <td>
+                   <button @click="operation = 1; formUsers = true; index2 = index; fillTheFormWithTheUserDataToModifyIt()">Modificar</button>
+                   <button @click="delete_user(index)">Eliminar</button>
+               </td> 
             </tr>
         </table>
 
         <h2>
             {{logedUser}}
         </h2>
+   
+        <form v-if="formUsers">
+            <fieldset>
+                <legend>Datos de usuario</legend>
 
+                <label>Nombre:</label>
+                <input type="name" v-model="name" name="">
+                <br>
+
+                <label>Nombre de usuario: </label>
+                <input type="username" v-model="username" name="">
+                <br>
+
+                <label>Correo: </label>
+                <input type="email" v-model="email" name="">
+                <br>
+
+                <label>Telefono: </label>
+                <input type="phone" v-model="phone" name="">
+                <br><br>
+
+                <button @click.prevent="operations">Guardar</button>
+            </fieldset>
+        </form>
     </div>
 
     <script type="text/javascript">
@@ -56,7 +84,58 @@
             data(){
                 return{
                     users:null,
-                    logedUser: null
+                    logedUser: null,
+                    formUsers: false,
+                    operation: 0,
+                    index2: null,
+                    name: null,
+                    username: null,
+                    email: null,
+                    phone: null
+                }
+            },
+            methods: {
+                delete_user(index){
+                    this.users.splice(index, 1)
+                },
+
+                operations(){
+                    if(this.operation == 0){
+                        this.saveNewUser();
+                    }else{
+                        this.editUser();
+                    }
+
+                    this.formUsers = false;
+                },
+
+                saveNewUser(){
+                    var idCheck = 100;
+
+                    this.users.push({
+                        id: idCheck,
+                        name: this.name,
+                        username: this.username,
+                        email: this.email,
+                        phone: this.phone
+                    })
+                },
+
+                editUser(){
+                    this.users[this.index2] = {
+                        id: this.users[this.index2].id,
+                        name: this.name,
+                        username: this.username,
+                        email: this.email,
+                        phone: this.phone
+                    }
+                },
+
+                fillTheFormWithTheUserDataToModifyIt(){
+                    this.name = this.users[this.index2].name,
+                    this.username = this.users[this.index2].username,
+                    this.email = this.users[this.index2].email,
+                    this.phone = this.users[this.index2].phone
                 }
             },
             mounted(){
